@@ -1,0 +1,129 @@
+<!-- ------------------------------------------ -->
+<!-- ----------- HWK 1 - Question 3 ----------- -->
+<!-- ------- Route: 32 Marker Animation ------- -->
+<!-- ------------------------------------------ -->
+
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+    <meta charset="utf-8" />
+    <title>Route 32 Animation</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
+
+        <style>
+
+            body {margin:   0;
+                  padding:  0;}
+
+            #map {position: absolute;
+                  top:      0;
+                  bottom:   0;
+                  width:    100%;}
+
+            .map-overlay {position: absolute;
+                          left:     0;
+                          padding:  10px;}
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div id="map"></div>
+
+        <div class="map-overlay top">
+
+            <button style="font-size: 2em" onclick="move()">
+                Show Route
+            </button>
+
+        </div>
+        
+        <script>
+            // api token
+            mapboxgl.accessToken = 'pk.eyJ1Ijoic3Rvcm1tYXRhIiwiYSI6ImNremVwMjhxZzA3ZmMydm16d2JlOG9oOGUifQ.My6NECnslilyi-VyQiOCIg';
+
+            // map instance
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style:     'mapbox://styles/mapbox/outdoors-v11',
+                center:    [-71.119215, 42.270860],
+                zoom:      12});
+
+            // map marker
+            var marker = new mapboxgl.Marker()
+                .setLngLat([-71.11322735566529, 42.30045349970251])
+                .addTo(map);
+
+            // Route 32 station coordinates
+            const busStops = [
+                [-71.11322735566529, 42.30045349970251],
+                [-71.1161255024029,  42.29621690035407],
+                [-71.1177967707224,  42.29254286688683],
+                [-71.11821442424252, 42.29001303963699],
+                [-71.11871220432442, 42.28681835811213],
+                [-71.11896370383226, 42.2850095067449],
+                [-71.11898801975241, 42.283099901552674],
+                [-71.11895341466658, 42.28009377893005],
+                [-71.11961480157777, 42.27674435410984],
+                [-71.1201832717968,  42.272704045502394],
+                [-71.12060532566204, 42.2704870540731],
+                [-71.1209102822786,  42.268211206704535],
+                [-71.12104896580422, 42.2659659232788],
+                [-71.12136095176533, 42.264092295276185],
+                [-71.1222832088327,  42.26143294261459],
+                [-71.12354125578997, 42.25818269675486],
+                [-71.12410827319314, 42.255886829381325],
+                [-71.12430851987955, 42.25474722240938],
+                [-71.12528653582552, 42.25205467172387],
+                [-71.12690827487097, 42.24863901480532],
+                [-71.12867636403178, 42.24645458009914],
+                [-71.12960852965455, 42.244508120444834],
+                [-71.13070295460591, 42.24173639648123],
+                [-71.13206552328904, 42.239311336057966],
+                [-71.13213477505502, 42.237488877660525]
+            ];
+
+            let counter  = 0;
+            var backward = 0;
+
+            // walk the coordinate counter
+            var walker = function(){
+
+                // walk forward
+                if(counter < busStops.length && backward == 0){
+                    counter++;
+                    if(counter == busStops.length){
+                        counter--;
+                        backward = 1};
+                };
+
+                // walk back
+                if(backward == 1){
+                    counter--;
+                    if(counter == 0){backward = 0};
+                };
+                
+                // console.log(counter)
+                marker.setLngLat(busStops[counter]); 
+
+                move();
+            };
+
+            // timer
+            function move(){
+
+                setTimeout(walker, 250);
+                
+            };
+
+        </script>
+        
+    </body>
+
+</html>

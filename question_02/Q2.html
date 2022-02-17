@@ -1,0 +1,56 @@
+<!-- ------------------------------------------ -->
+<!-- ----------- HWK 1 - Question 2 ----------- -->
+<!-- ----------- Marker on Lobby 7 ------------ -->
+<!-- ------------------------------------------ -->
+
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <meta charset="utf-8" />
+        <title>Map Marker on Lobby 7</title>
+        <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
+
+            <style>
+
+                body {margin:   0;
+                      padding:  0;}
+
+                #map {position: absolute;
+                      top:      0;
+                      bottom:   0;
+                      width:    100%;}
+
+            </style>
+
+    </head>
+
+    <body>
+
+        <div id="map"></div>
+
+        <script>
+
+            // your token from https://account.mapbox.com
+            mapboxgl.accessToken = 'pk.eyJ1Ijoic3Rvcm1tYXRhIiwiYSI6ImNremVwMjhxZzA3ZmMydm16d2JlOG9oOGUifQ.My6NECnslilyi-VyQiOCIg';
+
+            // add map to page
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style:     'mapbox://styles/mapbox/streets-v11',
+                center:    [-71.09315075466816,42.359216824348636],
+                zoom:      14.5});
+
+            // add marker to map
+            var marker = new mapboxgl.Marker()
+            .setLngLat([-71.0932197, 42.3591364])
+            .addTo(map);
+
+        </script>
+
+    </body>
+    
+</html>

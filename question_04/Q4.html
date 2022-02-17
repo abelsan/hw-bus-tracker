@@ -1,0 +1,121 @@
+<!-- ------------------------------------------ -->
+<!-- ----------- HWK 1 - Question 4 ----------- -->
+<!-- ------- MBTA Real-Time Bus Tracker ------- -->
+<!-- ------------------------------------------ -->
+
+<!DOCTYPE html>
+
+<html>
+    
+    <head>
+
+        <meta charset="utf-8" />
+        <title>Real Time Bus Tracker - Route 1</title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
+
+            <style>
+
+                body {margin:   0;
+                      padding:  0;}
+
+                #map {position: absolute;
+                      top:      0;
+                      bottom:   0;
+                      width:    100%;}
+
+            </style>
+
+    </head>
+
+    <body>
+
+        <div id="map"></div>
+
+        <script>
+
+            // api token
+            mapboxgl.accessToken = 'pk.eyJ1Ijoic3Rvcm1tYXRhIiwiYSI6ImNremVwMjhxZzA3ZmMydm16d2JlOG9oOGUifQ.My6NECnslilyi-VyQiOCIg';
+
+            // Change map color based on time of day
+            const time = new Date();
+            time.getHours();
+
+            if (time < 6 | time > 18) {
+
+                var map = new mapboxgl.Map({
+                    container: 'map',
+                    style:     'mapbox://styles/mapbox/dark-v10',
+                    center:    [-71.09126072506115,42.354424437134924],
+                    zoom:      13
+                });
+
+            }else{
+
+                var map = new mapboxgl.Map({
+                    container: 'map',
+                    style:     'mapbox://styles/mapbox/light-v10',
+                    center:    [-71.09126072506115,42.354424437134924],
+                    zoom:      13
+                });
+
+            };
+
+            // bus data from MBTA
+            async function routeData(){
+                const url = 'https://api-v3.mbta.com/vehicles?filter[route]=1&include=trip';
+
+                var res   = await fetch(url);
+                var json  = await res.json();
+
+                return json;  
+            }
+
+            // Markers and bus variables
+            var buses      = [];
+            let BusMarkers = [];
+
+
+            // update bus positions on map
+            async function move(){
+
+                // remove any existing markers
+                BusMarkers.forEach((marker) => marker.remove())
+
+                // request bus data
+                var buses = await routeData();
+
+                // loop through buses, update positions
+                buses.data.forEach(function(bus){
+
+                    var id   = bus.id;
+                    var lat  = bus.attributes.latitude;
+                    var long = bus.attributes.longitude;
+
+                    console.log(
+                        'id:'   + id   + 
+                        ',lat'  + lat  +
+                        ',long' + long
+                    );
+
+                    // add markers to map
+                    const marker = new mapboxgl.Marker()
+                        .setLngLat([long,lat])
+                        .addTo(map)
+                        BusMarkers.push(marker) 
+
+                });
+
+                // timer
+                setTimeout(move, 15000);
+
+            }
+
+            move();
+
+        </script>
+    
+    </body>
+
+</html>
