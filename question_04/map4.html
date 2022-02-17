@@ -25,7 +25,7 @@
   <button style="font-size:1em; " onclick="run()">
     Show stops - Bus 64
   </button>
-</div> -->
+</div>  -->
 
 <script>
 
@@ -51,7 +51,12 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicmFpbmJvd2tpd2kiLCJhIjoiY2t6cTJ0dzhoNmV2eTJ3b
   let routeStops= [];
 
   async function run(){
+    // for (var i = routeStops.length; i>= 0;){
+    //   routeStops[i].remove();
+    // }
+    routeStops.forEach((marker) => marker.remove())
     var buses = await getBusLocations();
+
     buses.data.forEach(function(bus){
       var id = bus.id;
       var lat = bus.attributes.latitude;
@@ -62,10 +67,10 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicmFpbmJvd2tpd2kiLCJhIjoiY2t6cTJ0dzhoNmV2eTJ3b
         ',lng' + lng
       );
 
-      const busmark = new mapboxgl.Marker()
+      const busmarker = new mapboxgl.Marker()
         .setLngLat([lng,lat])
         .addTo(map)
-        routeStops.push(busmark)
+        routeStops.push(busmarker)
 
       // var busmark = [lng, lat]
       // routeStops.push(busmark)
@@ -96,7 +101,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicmFpbmJvd2tpd2kiLCJhIjoiY2t6cTJ0dzhoNmV2eTJ3b
   //     move();
   //   }, 1000)
   // }
-  // move();
+  move();
 </script>
 </body>
 </html>
